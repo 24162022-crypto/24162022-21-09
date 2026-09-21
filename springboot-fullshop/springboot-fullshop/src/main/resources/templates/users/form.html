@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title th:text="${userFormDTO.id == null} ? 'Them nguoi dung' : 'Sua nguoi dung'">Nguoi dung</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="panel narrow">
+        <h1 th:text="${userFormDTO.id == null} ? 'Them nguoi dung' : 'Sua nguoi dung'">Nguoi dung</h1>
+
+        <div class="alert error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+        <form th:action="${userFormDTO.id == null} ? @{/users/create} : @{/users/edit/{id}(id=${userFormDTO.id})}"
+              th:object="${userFormDTO}" method="post" class="form-grid">
+
+            <label>Username</label>
+            <div>
+                <input type="text" th:field="*{username}" required>
+                <div class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+            </div>
+
+            <label>Email</label>
+            <div>
+                <input type="email" th:field="*{email}" required>
+                <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <label>Ho ten</label>
+            <div>
+                <input type="text" th:field="*{fullName}" required>
+                <div class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+            </div>
+
+            <label>Mat khau</label>
+            <div>
+                <input type="password" th:field="*{password}"
+                       th:placeholder="${userFormDTO.id == null} ? 'Toi thieu 6 ky tu' : 'De trong neu khong doi'">
+                <p class="hint" style="font-size:12px;color:#64748b;margin:4px 0 0">
+                    De trong khi sua se giu nguyen mat khau hien tai.
+                </p>
+            </div>
+
+            <label>Vai tro</label>
+            <div>
+                <select th:field="*{roleId}" required>
+                    <option value="">-- Chon vai tro --</option>
+                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+                </select>
+            </div>
+
+            <label>Kich hoat</label>
+            <div>
+                <input type="checkbox" th:field="*{enabled}" style="width:auto">
+            </div>
+
+            <div class="actions-row mt">
+                <button class="btn primary" type="submit">Luu</button>
+                <a class="btn secondary" th:href="@{/users}">Huy</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

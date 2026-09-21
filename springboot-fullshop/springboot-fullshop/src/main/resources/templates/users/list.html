@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Quan ly nguoi dung</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="page-title">
+        <h1>Quan ly nguoi dung</h1>
+        <a class="btn primary" th:href="@{/users/create}">+ Them nguoi dung</a>
+    </div>
+
+    <form class="search" th:action="@{/users}" method="get">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Tim theo username, email, ho ten...">
+        <button class="btn secondary" type="submit">Tim kiem</button>
+    </form>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Ho ten</th>
+                <th>Vai tro</th>
+                <th>So san pham</th>
+                <th>Trang thai</th>
+                <th>Hanh dong</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${userPage.content}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.username}">username</td>
+                <td th:text="${user.email}">email@example.com</td>
+                <td th:text="${user.fullName}">Ho ten</td>
+                <td th:text="${user.roleName}">ROLE_USER</td>
+                <td th:text="${user.productCount}">0</td>
+                <td>
+                    <span th:if="${user.enabled}" class="badge on">Da kich hoat</span>
+                    <span th:unless="${user.enabled}" class="badge off">Chua kich hoat</span>
+                </td>
+                <td class="actions">
+                    <a class="btn small secondary" th:href="@{/users/edit/{id}(id=${user.id})}">Sua</a>
+                    <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display:inline"
+                          onsubmit="return confirm('Xoa nguoi dung nay?');">
+                        <button class="btn small danger" type="submit">Xoa</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${userPage.empty}">
+                <td colspan="8">Khong co du lieu.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" th:if="${userPage.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, userPage.totalPages - 1)}"
+              th:class="${i == userPage.number} ? 'active' : ''">
+            <a th:href="@{/users(keyword=${keyword}, page=${i})}" th:text="${i + 1}">1</a>
+        </span>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dang ky</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+    <h1>IOTSTAR SHOP</h1>
+    <h2>Tao tai khoan</h2>
+
+    <div class="alert error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/register}" th:object="${registerDTO}" method="post">
+        <label>Username</label>
+        <input type="text" th:field="*{username}" placeholder="username" required>
+        <div class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}" placeholder="email@example.com" required>
+        <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+        <label>Ho ten</label>
+        <input type="text" th:field="*{fullName}" placeholder="Nguyen Van A" required>
+        <div class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+
+        <label>Mat khau</label>
+        <input type="password" th:field="*{password}" placeholder="Toi thieu 6 ky tu" required>
+        <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+        <button class="btn primary full mt" type="submit">Dang ky</button>
+    </form>
+
+    <p class="mt">Da co tai khoan? <a th:href="@{/login}">Dang nhap</a></p>
+</div>
+</body>
+</html>

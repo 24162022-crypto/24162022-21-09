@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/fragments/header.html -->
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<header th:fragment="header" class="site-header">
+    <div class="container header-inner">
+        <a class="brand" th:href="@{/}">springboot1-8</a>
+
+        <nav class="main-nav" aria-label="Điều hướng chính">
+            <a th:href="@{/}">Trang chủ</a>
+            <a th:href="@{/dashboard}" sec:authorize="isAuthenticated()">Bảng điều khiển</a>
+            <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Quản trị</a>
+        </nav>
+
+        <!-- Đã đăng nhập: hiển thị thông tin user + nút đăng xuất -->
+        <div class="user-box" sec:authorize="isAuthenticated()">
+            <div class="user-info">
+                <!-- currentUser do GlobalModelAttributes cung cấp; nếu chưa có thì dùng email làm tên -->
+                <span class="user-name"
+                      th:text="${currentUser != null} ? ${currentUser.fullName} : ${#authentication.name}">Họ tên</span>
+                <!-- sec:authentication="name" = username của Spring Security = email -->
+                <span class="user-email" sec:authentication="name">email@example.com</span>
+            </div>
+            <span class="badge" th:if="${currentUser != null}" th:text="${currentUser.roleName}">ROLE</span>
+
+            <!-- th:action tự chèn CSRF token ẩn vào form POST /logout -->
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline">Đăng xuất</button>
+            </form>
+        </div>
+
+        <!-- Chưa đăng nhập -->
+        <div class="user-box" sec:authorize="isAnonymous()">
+            <a class="btn btn-primary" th:href="@{/login}">Đăng nhập</a>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

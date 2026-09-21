@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Trang chu</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="panel">
+        <h1>Chao mung den voi IOTStar Shop</h1>
+
+        <div sec:authorize="isAuthenticated()">
+            <p>Xin chao, <strong sec:authentication="name">user</strong>!</p>
+            <p><a class="btn primary" th:href="@{/products}">Xem san pham cua ban</a></p>
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+            <p>Vui long <a th:href="@{/login}">dang nhap</a> hoac <a th:href="@{/register}">dang ky</a> de tiep tuc.</p>
+        </div>
+    </div>
+</main>
+</body>
+</html>

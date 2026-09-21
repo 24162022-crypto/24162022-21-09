@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/auth/login.html -->
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Đăng nhập</title>
+</head>
+<body>
+
+<main class="container auth-page" layout:fragment="content">
+    <section class="card auth-card">
+        <h1>Đăng nhập</h1>
+        <p class="muted">Nhập username hoặc email cùng mật khẩu để tiếp tục.</p>
+
+        <!-- /login?error=true -->
+        <div class="alert alert-error" role="alert" th:if="${param.error}">
+            Sai tên đăng nhập/email hoặc mật khẩu, hoặc tài khoản đã bị khoá.
+        </div>
+
+        <!-- /login?logout=true -->
+        <div class="alert alert-success" role="status" th:if="${param.logout}">
+            Bạn đã đăng xuất thành công.
+        </div>
+
+        <!-- th:action tự chèn CSRF token ẩn -->
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">Username hoặc email</label>
+                <input type="text" id="username" name="username"
+                       placeholder="user01 hoặc user01@gmail.com"
+                       autocomplete="username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Nhập mật khẩu"
+                       autocomplete="current-password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

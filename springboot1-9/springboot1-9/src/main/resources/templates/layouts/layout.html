@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/layouts/layout.html -->
+<!-- Layout chính dùng thymeleaf-layout-dialect -->
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Tiêu đề = <title> của trang con + " | " + tiêu đề layout -->
+    <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE">springboot1-9</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+    <!-- Header dùng chung (th:replace fragment) -->
+    <header th:replace="~{fragments/header :: header}"></header>
+
+    <!-- Nội dung của từng trang sẽ thay vào đây -->
+    <main class="container" layout:fragment="content">
+        <p>Nội dung trang</p>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <span>springboot1-9 · Spring Boot 4 · Spring Security 7 · Thymeleaf Layout Dialect</span>
+        </div>
+    </footer>
+
+</body>
+</html>

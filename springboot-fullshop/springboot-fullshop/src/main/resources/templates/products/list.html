@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>San pham</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="page-title">
+        <h1 sec:authorize="hasRole('ADMIN')">Tat ca san pham</h1>
+        <h1 sec:authorize="!hasRole('ADMIN')">San pham cua toi</h1>
+        <a class="btn primary" th:href="@{/products/create}">+ Them san pham</a>
+    </div>
+
+    <form class="search" th:action="@{/products}" method="get">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Tim theo ten san pham...">
+        <button class="btn secondary" type="submit">Tim kiem</button>
+    </form>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Anh</th>
+                <th>Ten san pham</th>
+                <th>Gia</th>
+                <th sec:authorize="hasRole('ADMIN')">Chu so huu</th>
+                <th>Ngay tao</th>
+                <th>Hanh dong</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${productPage.content}">
+                <td>
+                    <img th:if="${product.image != null and !#strings.isEmpty(product.image)}"
+                         th:src="${product.image}" class="thumb" alt="anh">
+                    <div th:unless="${product.image != null and !#strings.isEmpty(product.image)}" class="thumb"></div>
+                </td>
+                <td th:text="${product.name}">Ten san pham</td>
+                <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' d'">0</td>
+                <td sec:authorize="hasRole('ADMIN')" th:text="${product.ownerUsername}">username</td>
+                <td th:text="${#temporals.format(product.createdAt, 'dd/MM/yyyy')}">01/01/2026</td>
+                <td class="actions">
+                    <a class="btn small secondary" th:href="@{/products/edit/{id}(id=${product.id})}">Sua</a>
+                    <form th:action="@{/products/delete/{id}(id=${product.id})}" method="post" style="display:inline"
+                          onsubmit="return confirm('Xoa san pham nay?');">
+                        <button class="btn small danger" type="submit">Xoa</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${productPage.empty}">
+                <td colspan="6">Khong co du lieu.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" th:if="${productPage.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+              th:class="${i == productPage.number} ? 'active' : ''">
+            <a th:href="@{/products(keyword=${keyword}, page=${i})}" th:text="${i + 1}">1</a>
+        </span>
+    </div>
+</main>
+</body>
+</html>

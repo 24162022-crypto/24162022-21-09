@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dang nhap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+    <h1>IOTSTAR SHOP</h1>
+    <h2>Dang nhap</h2>
+
+    <div class="alert error" th:if="${param.error}">
+        Username/email hoac mat khau khong dung, hoac tai khoan chua duoc kich hoat.
+    </div>
+    <div class="alert success" th:if="${param.verified}">Xac thuc thanh cong. Hay dang nhap.</div>
+    <div class="alert success" th:if="${param.reset}">Doi mat khau thanh cong.</div>
+    <div class="alert success" th:if="${param.logout}">Ban da dang xuat.</div>
+
+    <form th:action="@{/login}" method="post">
+        <label>Username hoac Email</label>
+        <input type="text" name="login" placeholder="Username hoac email" required autofocus>
+
+        <label>Mat khau</label>
+        <input type="password" name="password" placeholder="Mat khau" required>
+
+        <button class="btn primary full mt" type="submit">Dang nhap</button>
+    </form>
+
+    <p class="mt">
+        <a th:href="@{/register}">Tao tai khoan</a> &middot;
+        <a th:href="@{/forgot-password}">Quen mat khau?</a>
+    </p>
+</div>
+</body>
+</html>

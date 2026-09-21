@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title th:text="${productFormDTO.id == null} ? 'Them san pham' : 'Sua san pham'">San pham</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="panel narrow">
+        <h1 th:text="${productFormDTO.id == null} ? 'Them san pham' : 'Sua san pham'">San pham</h1>
+
+        <div class="alert error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+        <form th:action="${productFormDTO.id == null} ? @{/products/create} : @{/products/edit/{id}(id=${productFormDTO.id})}"
+              th:object="${productFormDTO}" method="post" enctype="multipart/form-data" class="form-grid">
+
+            <label>Ten san pham</label>
+            <div>
+                <input type="text" th:field="*{name}" required>
+                <div class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+
+            <label>Mo ta</label>
+            <div>
+                <textarea th:field="*{description}" rows="4"></textarea>
+            </div>
+
+            <label>Gia</label>
+            <div>
+                <input type="number" step="0.01" min="0" th:field="*{price}" required>
+                <div class="field-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            </div>
+
+            <label>Hinh anh</label>
+            <div>
+                <img th:if="${productFormDTO.currentImage != null and !#strings.isEmpty(productFormDTO.currentImage)}"
+                     th:src="${productFormDTO.currentImage}" class="thumb" alt="anh hien tai"
+                     style="margin-bottom:8px;">
+                <input type="file" name="imageFile" accept="image/*">
+                <p class="hint" style="font-size:12px;color:#64748b;margin:4px 0 0">
+                    Anh se duoc upload len Cloudinary. De trong neu khong doi anh.
+                </p>
+            </div>
+
+            <div class="actions-row mt">
+                <button class="btn primary" type="submit">Luu</button>
+                <a class="btn secondary" th:href="@{/products}">Huy</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

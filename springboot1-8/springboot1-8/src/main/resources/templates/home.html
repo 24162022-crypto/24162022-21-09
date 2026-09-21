@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/home.html -->
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/layout :: head('Trang chủ')}"></head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+
+    <!-- Đã đăng nhập -->
+    <section class="card" sec:authorize="isAuthenticated()">
+        <h1>Xin chào, <span th:text="${currentUser != null} ? ${currentUser.fullName} : ${#authentication.name}">Họ tên</span></h1>
+        <p class="muted">Bạn đã đăng nhập thành công. Thông tin tài khoản:</p>
+
+        <dl class="info-list" th:if="${currentUser != null}">
+            <dt>Email</dt>
+            <dd th:text="${currentUser.email}">email@example.com</dd>
+
+            <dt>Họ tên</dt>
+            <dd th:text="${currentUser.fullName}">Họ tên</dd>
+
+            <dt>Quyền</dt>
+            <dd th:text="${currentUser.roleName}">ADMIN</dd>
+
+            <dt>Trạng thái</dt>
+            <dd th:text="${currentUser.enabled} ? 'Đang hoạt động' : 'Đã khoá'">Đang hoạt động</dd>
+
+            <dt>Ngày tạo</dt>
+            <dd th:text="${#temporals.format(currentUser.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2026 08:00</dd>
+        </dl>
+    </section>
+
+    <!-- Chưa đăng nhập -->
+    <section class="card" sec:authorize="isAnonymous()">
+        <h1>Chào mừng bạn</h1>
+        <p class="muted">Hãy đăng nhập để xem thông tin tài khoản.</p>
+        <a class="btn btn-primary" th:href="@{/login}">Đăng nhập</a>
+    </section>
+
+</main>
+
+<footer th:replace="~{layouts/layout :: footer}"></footer>
+
+</body>
+</html>

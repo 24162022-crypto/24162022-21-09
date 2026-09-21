@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/layouts/layout.html -->
+<!-- Layout dùng fragment thông thường (KHÔNG dùng thymeleaf-layout-dialect) -->
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Cách dùng ở trang con: <head th:replace="~{layouts/layout :: head('Tiêu đề trang')}"></head> -->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' | springboot1-8'">springboot1-8</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+
+<body>
+    <!-- Cách dùng ở trang con: <footer th:replace="~{layouts/layout :: footer}"></footer> -->
+    <footer th:fragment="footer" class="site-footer">
+        <div class="container">
+            <span>springboot1-8 · Spring Boot 4 · Spring Security · Thymeleaf</span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/fragments/header.html -->
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header th:fragment="header" class="site-header">
+    <div class="container header-inner">
+        <a class="brand" th:href="@{/}">springboot1-9</a>
+
+        <!--
+            Đã đăng nhập: principal chính là CustomUserDetails.
+            (th:if được xử lý trước th:with nên chỉ đọc principal khi đã đăng nhập)
+        -->
+        <div class="user-box"
+             th:if="${#authorization.expression('isAuthenticated()')}"
+             th:with="me=${#authentication.principal}">
+
+            <!-- Ảnh đại diện; nếu images null/rỗng thì dùng ảnh mặc định -->
+            <img class="avatar" alt="Ảnh đại diện"
+                 th:src="${#strings.isEmpty(me.images)} ? @{/images/user.png} : @{${me.images}}">
+
+            <div class="user-info">
+                <span class="user-name" th:text="${me.fullName}">Họ tên</span>
+                <span class="user-meta">
+                    <span th:text="${me.username}">username</span> ·
+                    <span th:text="${me.email}">email@example.com</span>
+                </span>
+            </div>
+
+            <span class="badge" th:text="${#strings.replace(me.role, 'ROLE_', '')}">USER</span>
+
+            <!-- th:action tự chèn CSRF token ẩn vào form POST /logout -->
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline">Đăng xuất</button>
+            </form>
+        </div>
+
+        <!-- Chưa đăng nhập -->
+        <div class="user-box" th:unless="${#authorization.expression('isAuthenticated()')}">
+            <a class="btn btn-primary" th:href="@{/login}">Đăng nhập</a>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

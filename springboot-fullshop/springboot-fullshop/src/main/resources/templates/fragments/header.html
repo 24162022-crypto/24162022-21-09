@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="header" class="topbar">
+    <div class="brand">
+        <a th:href="@{/}">IOTStar Shop</a>
+    </div>
+
+    <nav sec:authorize="isAuthenticated()">
+        <a th:href="@{/products}">San pham</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/users}">Nguoi dung</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/dashboard}">Dashboard</a>
+    </nav>
+
+    <div class="account" sec:authorize="isAuthenticated()">
+        <img th:if="${#authentication.principal.avatar != null and !#strings.isEmpty(#authentication.principal.avatar)}"
+             th:src="${#authentication.principal.avatar}"
+             alt="Avatar" width="32" height="32"
+             style="border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:8px;">
+        <span sec:authentication="name">user</span>
+        <span class="role-badge" th:text="${#authentication.principal.role}">ROLE_USER</span>
+
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button class="link-button" type="submit">Dang xuat</button>
+        </form>
+    </div>
+
+    <div class="account" sec:authorize="isAnonymous()">
+        <a th:href="@{/login}">Dang nhap</a>
+        &middot;
+        <a th:href="@{/register}">Dang ky</a>
+    </div>
+</header>
+</body>
+</html>

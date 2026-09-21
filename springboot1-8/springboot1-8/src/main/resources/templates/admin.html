@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/admin.html -->
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/layout :: head('Quản trị')}"></head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+    <section class="card">
+        <h1>Khu vực quản trị</h1>
+        <p class="muted">Trang này chỉ dành cho tài khoản có quyền ADMIN.</p>
+    </section>
+</main>
+
+<footer th:replace="~{layouts/layout :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/auth/login.html -->
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/layout :: head('Đăng nhập')}"></head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container auth-page">
+    <section class="card auth-card">
+        <h1>Đăng nhập</h1>
+        <p class="muted">Dùng email và mật khẩu của bạn để tiếp tục.</p>
+
+        <!-- Hiển thị lỗi: /login?error=true -->
+        <div class="alert alert-error" role="alert" th:if="${param.error}">
+            Email hoặc mật khẩu không đúng, hoặc tài khoản đã bị khoá.
+        </div>
+
+        <!-- Hiển thị thông báo: /login?logout=true -->
+        <div class="alert alert-success" role="status" th:if="${param.logout}">
+            Bạn đã đăng xuất thành công.
+        </div>
+
+        <!--
+            th:action="@{/login}" khiến Thymeleaf tự chèn thêm
+            <input type="hidden" name="_csrf" value="..."> (CSRF token ẩn) vào form.
+        -->
+        <form th:action="@{/login}" th:object="${loginDTO}" method="post" novalidate>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{email}"
+                       placeholder="ten@example.com" autocomplete="username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" th:field="*{password}"
+                       placeholder="Nhập mật khẩu" autocomplete="current-password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+        </form>
+    </section>
+</main>
+
+<footer th:replace="~{layouts/layout :: footer}"></footer>
+
+</body>
+</html>

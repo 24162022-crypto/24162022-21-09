@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- File: src/main/resources/templates/home.html -->
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Trang chủ</title>
+</head>
+<body>
+
+<main class="container" layout:fragment="content">
+    <section class="card">
+        <h1>Xin chào, <span th:text="${#authentication.principal.fullName}">Họ tên</span></h1>
+        <p class="muted">Bạn đã đăng nhập thành công.</p>
+
+        <!-- Thông tin lấy từ UserService -> UserMapper -> UserDTO -->
+        <dl class="info-list" th:if="${currentUser != null}">
+            <dt>Username</dt>
+            <dd th:text="${currentUser.username}">user01</dd>
+
+            <dt>Email</dt>
+            <dd th:text="${currentUser.email}">user01@gmail.com</dd>
+
+            <dt>Họ tên</dt>
+            <dd th:text="${currentUser.fullName}">Họ tên</dd>
+
+            <dt>Quyền</dt>
+            <dd th:text="${currentUser.roleName}">ROLE_USER</dd>
+
+            <dt>Trạng thái</dt>
+            <dd th:text="${currentUser.enabled} ? 'Đang hoạt động' : 'Đã khoá'">Đang hoạt động</dd>
+        </dl>
+    </section>
+</main>
+
+</body>
+</html>
